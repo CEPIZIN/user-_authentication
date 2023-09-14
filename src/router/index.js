@@ -1,17 +1,14 @@
-import express from 'express'
-import user from './userRoutes.js'
-import routes from './router/index.js'
+import express from 'express';
+import userRoutes from './userRoutes.js';
 
-
-const routes = (app)=>{
-    app.get('/',(req,res) =>{
+const routes = (app) => {
+    app.get('/', (req, res) => {
         res.status(200).send("Registration")
-    })
+    });
     app.use(
         express.json(),
-        user
-        
-    )
+        userRoutes
+    );
 }
 
-export default routes
+export default routes;
