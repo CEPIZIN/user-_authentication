@@ -19,6 +19,8 @@
     "mongodb": "^6.0.0",
     "mongoose": "^7.5.0",
     "nodemon": "^3.0.1",
+    "swagger": "^0.7.5",
+    "swagger-ui-express": "^5.0.0",
     "validator": "^13.11.0"
   }
 }
