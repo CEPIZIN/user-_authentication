@@ -1,0 +1,36 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Minha API
+  description: em contrução 
+
+host: localhost:3000
+basePath: /
+
+paths:
+  /auth/register:
+    post:
+      summary: Cria um novo usuário
+      description: Cria um novo usuário com base nos dados fornecidos
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserInput'
+      responses:
+        '200':
+          description: Sucesso ao registrar o usuário
+
+definitions:
+  UserInput:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
