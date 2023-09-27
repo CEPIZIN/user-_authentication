@@ -55,7 +55,20 @@ class UserControll {
                 return res.status(404).json({msg: 'Invalid password '})
             }
             
-            //logar o usuário 
+            try{
+                const secret = process.env.SECRET
+                const token =  jwt.sing({
+                    id: user._id
+                }, secret,
+                )
+                   res.status(200).json({msg:'Authentication successful',token})                                                 
+
+            } catch(error){
+                console.log(error)
+                res.ststus(500).json({
+                    msg: '"A server error occurred, please try again later'
+                })
+            }
 
         } catch (error) {
             return res.status(500).send(`Error: ${error.message} - User login failure`);
