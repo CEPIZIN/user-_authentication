@@ -6,37 +6,29 @@ class userControll {
     static register = async (req, res) => {
         try {
             const { name, email, password, confirmPassword } = req.body;
-
-            if (!name) {
-                return res.status(422).json({ message: "Name is required" });
+    
+            const errors = [];
+    
+            if (!name) errors.push("Name is required");
+            if (!email) errors.push("Email is required");
+            if (!validator.isEmail(email)) errors.push("Please enter a valid Email");
+            if (!password) errors.push("Password is required");
+            if (password !== confirmPassword) errors.push("Passwords do not match");
+    
+            if (errors.length > 0) {
+                return res.status(422).json({ errors });
             }
-
-            if (!email) {
-                return res.status(422).json({ message: "Email is required" });
-            }
-
-            if(!validator.isEmail(email)){
-                 return res.status(401).send("Please enter a valid Email");
-             }
-
-            if (!password) {
-                return res.status(422).json({ message: "Password is required" });
-            }
-
-            if (password !== confirmPassword) {
-                return res.status(422).json({ message: "Passwords do not match" });
-            }
-
-            const newUser = new UserModel({
-                name,
-                email,
-                password,
-            });
-
+    
+            const newUser = new UserModel({ name, email, password });
             const savedUser = await newUser.save();
-            res.status(201).send(savedUser.toJSON());
+        
+            return res.status(201).json({
+                message: "Cadastro feito com sucesso",
+                user: savedUser.toJSON()
+            });
+        
         } catch (error) {
-            res.status(500).send(`Error: ${error.message} - User registration failure`);
+            return res.status(500).send(`Error: ${error.message} - User registration failure`);
         }
     }
 }
