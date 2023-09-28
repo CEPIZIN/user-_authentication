@@ -1,6 +1,8 @@
 import UserModel from "../model/user.js";
 import bcrypt from 'bcrypt';
 import validator from 'validator';
+import jwt from 'jsonwebtoken'
+import User from '../model/user.js';
 
 class UserControll {
     //post 
@@ -9,16 +11,16 @@ class UserControll {
         try {
             const { name, email, password, confirmPassword } = req.body;
     
-            const errors = [];
-    
+        
             if (!name) errors.push("Name is required");
             if (!email) errors.push("Email is required");
             if (!validator.isEmail(email)) errors.push("Please enter a valid Email");
             if (!password) errors.push("Password is required");
             if (password !== confirmPassword) errors.push("Passwords do not match");
-    
-            if (errors.length > 0) {
-                return res.status(422).json({ errors });
+
+            const userExist = await User.findOne({ email: email})
+            if(userExist){
+                return res.status(422).json({msg: 'User already exists'})
             }
             
             try {
@@ -31,9 +33,9 @@ class UserControll {
                         throw error;
                     });
             } catch (error) {
-                return res.status(500).send(`Error: ${error.message} - User registration failure`);
+                return res.status(500).send(`Error: ${error.message} - User registration failure `);
             }
-            
+
         } catch (error) {
             return res.status(500).send(`Error: ${error.message} - User registration failure`);
         }
@@ -46,7 +48,7 @@ class UserControll {
             const { email, password } = req.body;
             const errors = [];
     
-            //validation 
+            //validation field
             if (!email) errors.push("Email is required");
             if (!validator.isEmail(email)) errors.push("Please enter a valid Email");
             if (!password) errors.push("Password is required");

@@ -2,8 +2,8 @@ import express from 'express';
 import userRoutes from './userRoutes.js';
 
 
-//swager documentation 
-//initial get
+
+//open route 
 const routes = (app) => {
     app.get('/', (req, res) => {
         res.status(200).send("Registration")
