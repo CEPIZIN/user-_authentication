@@ -5,13 +5,11 @@ import jwt from 'jsonwebtoken'
 import User from '../model/user.js';
 
 class UserControll {
-    //post 
-    //user registration 
+    //user registration - post 
     static register = async (req, res) => {
         try {
             const { name, email, password, confirmPassword } = req.body;
     
-        
             if (!name) errors.push("Name is required");
             if (!email) errors.push("Email is required");
             if (!validator.isEmail(email)) errors.push("Please enter a valid Email");
@@ -23,8 +21,15 @@ class UserControll {
                 return res.status(422).json({msg: 'User already exists'})
             }
             
+            const salt = await bcrypt.genSalt(12)
+            const passwordHash= await bcrypt.hash(password, salt)
+            
             try {
-                const newUser = new UserModel({ name, email, password });
+                const newUser = new UserModel({
+                    name, 
+                    email, 
+                    password:passwordHash
+                });
                 newUser.save()
                     .then((savedUser) => {
                         return res.status(201).send({ msg: 'Usuário criado com sucesso' });
