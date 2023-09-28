@@ -9,7 +9,9 @@ class UserControll {
     static register = async (req, res) => {
         try {
             const { name, email, password, confirmPassword } = req.body;
-    
+
+            const errors = [];
+    // validation field 
             if (!name) errors.push("Name is required");
             if (!email) errors.push("Email is required");
             if (!validator.isEmail(email)) errors.push("Please enter a valid Email");
@@ -20,10 +22,14 @@ class UserControll {
             if(userExist){
                 return res.status(422).json({msg: 'User already exists'})
             }
-            
+
+            if (errors.length > 0) {
+                return res.status(422).json({ errors });
+            }
+
             const salt = await bcrypt.genSalt(12)
             const passwordHash= await bcrypt.hash(password, salt)
-            
+    // create user on DB        
             try {
                 const newUser = new UserModel({
                     name, 
@@ -32,7 +38,7 @@ class UserControll {
                 });
                 newUser.save()
                     .then((savedUser) => {
-                        return res.status(201).send({ msg: 'Usuário criado com sucesso' });
+                        return res.status(201).send({ msg: 'User created successfully' });
                     })
                     .catch((error) => {
                         throw error;
@@ -46,51 +52,30 @@ class UserControll {
         }
     }
     
-     
     //User login 
     static login = async (req, res) => {
         try {
-            const { email, password } = req.body;
-            const errors = [];
-    
-            //validation field
-            if (!email) errors.push("Email is required");
-            if (!validator.isEmail(email)) errors.push("Please enter a valid Email");
-            if (!password) errors.push("Password is required");
-    
-            if (errors.length > 0) {
-                return res.status(400).json({ errors });
-            }
-    
-            //check if user exists 
-            const user = await UserModel.findOne({ email: email });
-            if (!user) {
-                return res.status(404).json({ msg: 'User not found' });
-            }
-    
-            //check if password is valid 
-            const checkPassword = await bcrypt.compare(password, user.password);
-            if (!checkPassword) {
-                return res.status(401).json({ msg: 'Invalid password' });
-            }
+        //valid field 
+        const {email, password} = req.body
 
-            try {
-                const secret = process.env.SECRET;
-                const token = jwt.sign(
-                    {
-                    id: user._id,
-                    }, 
-                    secret,
-                )
-    
-                res.status(200).json({ msg: 'Authentication successful', token });
-    
-            } catch (error) {
-                console.log(error);
-                res.status(500).json({
-                    msg: 'A server error occurred, please try again later'
-                });
-            }
+        if(!email){
+            return res.status(422).json({"msg":"Email address cannot be empty"})
+        }
+
+        if(!password){
+            return res.status(422).json({"msg": "Password can't be blank."})
+        }
+
+        // find the user in db and check for correct credentials
+        const user = await UserModel.findOne({email:email})
+        if(!user){
+            return res.status(404).json({msg: ' usuario nao encontrado'})
+        }
+        const checkPassword = await bcrypt.compare(password, user.password)
+        
+        if(!checkPassword){
+            return res.status(404).json({msg: 'senha invalida'})
+        }
     
         } catch (error) {
             return res.status(500).send(`Error: ${error.message} - User login failure`);
@@ -99,3 +84,4 @@ class UserControll {
 }
 
 export default UserControll;
+  
