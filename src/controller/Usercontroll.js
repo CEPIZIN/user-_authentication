@@ -76,6 +76,22 @@ class UserControll {
         if(!checkPassword){
             return res.status(404).json({msg: 'senha invalida'})
         }
+
+        try{
+            const secret = process.env.SECRET
+
+            const token = jwt .sign({
+                id:user._id,
+            },
+            secret,
+            )
+            res.status(200).json({msg:'autenticação realizada com sucesso',token})
+        }catch(err){
+            console.log(err)
+            res.status(500).json({
+                "msg": err
+            })
+        }
     
         } catch (error) {
             return res.status(500).send(`Error: ${error.message} - User login failure`);

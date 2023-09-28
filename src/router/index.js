@@ -1,12 +1,11 @@
-import express from 'express';
+import express, { application } from 'express';
 import userRoutes from './userRoutes.js';
+import app from '../app.js';
 
 
-
-//open route 
 const routes = (app) => {
     app.get('/', (req, res) => {
-        res.status(200).send("rEGISTER ON MY API ")
+        res.status(200).send("REGISTER ON MY API ")
     });
     app.use(
         express.json(),
@@ -15,5 +14,4 @@ const routes = (app) => {
 }
 
   
-
 export default routes;
