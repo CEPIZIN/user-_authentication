@@ -16,37 +16,29 @@ class UserControll {
             if (!validator.isEmail(email)) errors.push("Please enter a valid Email");
             if (!password) errors.push("Password is required");
             if (password !== confirmPassword) errors.push("Passwords do not match");
-
-            const userExist = await User.findOnde({email:email})
-            
-            if(userExist){
-                errors.push('User already exist')
-
-            const salt = await bcrypt.genSalt(12)
-            const passwordHash= await bcrypt.hash(password,salt)
-            }
     
             if (errors.length > 0) {
                 return res.status(422).json({ errors });
             }
-    
-            const newUser = new UserModel({
-                 name, 
-                 email, 
-                 password 
-                });
-
-            const savedUser = await newUser.save();
-        
-            return res.status(201).json({
-                message: "Registration successful",
-                user: savedUser.toJSON()
-            });
-        
+            
+            try {
+                const newUser = new UserModel({ name, email, password });
+                newUser.save()
+                    .then((savedUser) => {
+                        return res.status(201).send({ msg: 'Usuário criado com sucesso' });
+                    })
+                    .catch((error) => {
+                        throw error;
+                    });
+            } catch (error) {
+                return res.status(500).send(`Error: ${error.message} - User registration failure`);
+            }
+            
         } catch (error) {
             return res.status(500).send(`Error: ${error.message} - User registration failure`);
         }
     }
+    
      
     //User login 
     static login = async (req, res) => {

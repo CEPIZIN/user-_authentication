@@ -1,6 +1,9 @@
 import express from 'express';
 import userRoutes from './userRoutes.js';
 
+
+//swager documentation 
+//initial get
 const routes = (app) => {
     app.get('/', (req, res) => {
         res.status(200).send("Registration")
@@ -11,6 +14,6 @@ const routes = (app) => {
     );
 }
 
-
+  
 
 export default routes;
