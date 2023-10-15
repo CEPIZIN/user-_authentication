@@ -1,6 +1,18 @@
 # User Authentication API 🌐
 
-This API was built using Node.js and Express for user authentication.
+The User Authentication API is a robust authentication system built using Node.js and Express. It provides a secure and efficient way to manage user registration, authentication, and retrieval of user information. The authentication process is powered by JSON Web Tokens (JWT), ensuring data integrity and confidentiality.
+
+## Key Features
+
+- **User Registration**: Allows new users to create an account by providing their name, email address, and password.
+
+- **Authentication**: Provides a secure login process by verifying user credentials (email and password) against stored data.
+
+- **JWT-based Authentication**: Utilizes JSON Web Tokens for secure and efficient authentication, protecting sensitive user data.
+
+- **Private Routes**: Implements an authentication middleware to secure private routes, ensuring only authorized users have access.
+
+- **User Information Retrieval**: Enables retrieval of user information based on a unique user ID.
 
 ## Project Structure 📁
 ```bash
