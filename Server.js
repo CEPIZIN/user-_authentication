@@ -1,7 +1,5 @@
 import app from './src/app.js';
-import fs from 'fs';
-import yaml from 'js-yaml';
-import swaggerUi from 'swagger-ui-express';
+
 
 const port = process.env.PORT || 3000;
 
