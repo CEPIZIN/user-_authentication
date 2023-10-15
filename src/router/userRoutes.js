@@ -5,7 +5,7 @@ import checkToken from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 router
-    .get("/user/:id", UserController.privateRoute) 
+    .get("/user/:id",checkToken, UserController.privateRoute) 
     .post('/auth/register', UserController.register)
     .post('/auth/user', UserController.login)
 

@@ -1,5 +1,6 @@
 
 import dotenv from 'dotenv'
+import jwt from 'jsonwebtoken'
 dotenv.config()
 
 const checkToken =  (req,res,next) =>{
@@ -11,9 +12,11 @@ const checkToken =  (req,res,next) =>{
     }
     try{
         const secret = process.env.SECRET;
+        //console.log("Token recebido:", token);
         jwt.verify(token,secret)
         next()
     }catch(err){
+        console.log(err)
         res.status(400).json({msg:"INAVALID TOKEN"})
     }
 

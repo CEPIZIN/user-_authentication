@@ -87,7 +87,8 @@ class UserControll {
             },
             secret,
             )
-            res.status(200).json({msg:'autenticação realizada com sucesso',token})
+            res.status(200).json({msg:'Authentication successful',token})
+            
         }catch(err){
             console.log(err)
             res.status(500).json({
@@ -107,7 +108,7 @@ class UserControll {
         if(!user){
             return res.status(404).json({msg:"user not found"})
         }
-        res.status(200).json({msg:`Welcome ${user}`})
+        res.status(200).json({msg:`Welcome ${user.name} to my API `})
     }catch(err){
         console.log(err)
     }      
