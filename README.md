@@ -1,8 +1,32 @@
-# User Authentication API
+# User Authentication API 🌐
 
 This API was built using Node.js and Express for user authentication.
 
-## Endpoints
+## Project Structure 📁
+```bash
+project-root-directory
+project-root-directory
+├── src
+│   ├── app.js
+│   ├── config 
+│   │   └── dbConfig.js
+│   ├── controllers
+│   │   └── userController.js
+│   ├── middleware
+│   │   └── authMiddleware.js
+│   ├── models
+│   │   └── userModel.js
+│   ├── routes
+│   │   ├── index.js
+│   │   └── userRoutes.js
+│   ├── docs
+│   │   └── swagger.yaml
+│   └── .env
+├── package.json
+├── Server.js
+└── README.md
+
+## Endpoints 🛣️
 
 ### Register User
 
