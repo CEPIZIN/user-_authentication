@@ -1,6 +1,6 @@
 import express, { application } from 'express';
 import userRoutes from './userRoutes.js';
-import app from '../app.js';
+
 
 //public route
 const routes = (app) => {

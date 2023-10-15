@@ -1,82 +1,100 @@
 swagger: '2.0'
 info:
   version: 1.0.0
-  title: BACK-END - user authentication API 
+  title: BACK-END - User Authentication API 
   description: API for user authentication. This API allows registration of new users, authentication, and access to private information.
 
 host: localhost:3000
 basePath: /
 
 paths:
+  /user/{id}:
+    get:
+      summary: Get user information by ID
+      description: Retrieve user information by their ID.
+      parameters:
+        - in: path
+          name: id
+          description: User ID
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User information retrieved successfully
+          schema:
+            $ref: '#/definitions/PrivateUserInfo'
+        '404':
+          description: User not found
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+
   /auth/register:
     post:
-      summary: Create | register a new user 
-      description: Create a user based on Data 
+      summary: Register a new user 
+      description: Register a new user based on provided data.
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
         - in: body
-          name: body
+          name: user
+          description: The user object to be registered
           required: true
           schema:
             $ref: '#/definitions/UserInput'
       responses:
-        '200':
-          description: success create user
+        '201':
+          description: User created successfully
           schema:
-            $ref: '#/definitions/UserOutput'
-
-  /auth/login:
+            $ref: '#/definitions/SuccessMessage'
+        '422':
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/ErrorMessage'
+      
+  /auth/user:
     post:
       summary: Authenticate user 
-      description: Authenticate a user based on credentials 
+      description: Authenticate a user based on provided credentials.
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
         - in: body
-          name: body
+          name: credentials
+          description: The user credentials for authentication
           required: true
           schema:
             $ref: '#/definitions/UserCredentials'
       responses:
         '200':
-          description: success authentication
+          description: Authentication successful
           schema:
             $ref: '#/definitions/AuthResponse'
         '404':
           description: User not found
-
-  /auth/private/{id}:
-    get:
-      summary: Get user information 
-      description: Get user information for a private route 
-      security:
-        - BearerAuth: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          type: string
-      responses:
-        '200':
-          description: success
           schema:
-            $ref: '#/definitions/PrivateUserInfo'
-        '404':
-          description: User not found
+            $ref: '#/definitions/ErrorMessage'
 
 definitions:
   UserInput:
     type: object
     properties:
-      username:
+      name:
+        type: string
+      email:
         type: string
       password:
         type: string
+      confirmPassword:
+        type: string
+    required:
+      - name
+      - email
+      - password
+      - confirmPassword
 
   UserCredentials:
     type: object
@@ -85,6 +103,9 @@ definitions:
         type: string
       password:
         type: string
+    required:
+      - email
+      - password
 
   AuthResponse:
     type: object
@@ -95,6 +116,18 @@ definitions:
         type: string
 
   PrivateUserInfo:
+    type: object
+    properties:
+      msg:
+        type: string
+
+  SuccessMessage:
+    type: object
+    properties:
+      msg:
+        type: string
+
+  ErrorMessage:
     type: object
     properties:
       msg:
