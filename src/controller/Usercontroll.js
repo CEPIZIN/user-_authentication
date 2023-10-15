@@ -4,6 +4,7 @@ import validator from 'validator';
 import jwt from 'jsonwebtoken'
 import User from '../model/user.js';
 
+
 class UserControll {
     //user registration - post 
     static register = async (req, res) => {
@@ -44,6 +45,7 @@ class UserControll {
                         throw error;
                     });
             } catch (error) {
+                //tornar as menssagens mais especificas - esse aqui não é de servidor e o erro não é 500
                 return res.status(500).send(`Error: ${error.message} - User registration failure `);
             }
 
@@ -52,6 +54,7 @@ class UserControll {
         }
     }
     
+
     //User login 
     static login = async (req, res) => {
         try {
@@ -61,7 +64,6 @@ class UserControll {
         if(!email){
             return res.status(422).json({"msg":"Email address cannot be empty"})
         }
-
         if(!password){
             return res.status(422).json({"msg": "Password can't be blank."})
         }
@@ -91,12 +93,26 @@ class UserControll {
             res.status(500).json({
                 "msg": err
             })
-        }
-    
+        }    
         } catch (error) {
             return res.status(500).send(`Error: ${error.message} - User login failure`);
         }
     }
+
+    //private route
+    static privateRoute = async (req,res)=>{
+    try{
+        const id = req.params.id
+        const user = await User.findById(id,'-password')
+        if(!user){
+            return res.status(404).json({msg:"user not found"})
+        }
+        res.status(200).json({msg:`Welcome ${user}`})
+    }catch(err){
+        console.log(err)
+    }      
+    }
+
 }
 
 export default UserControll;
