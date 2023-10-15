@@ -25,7 +25,7 @@ project-root-directory
 ├── package.json
 ├── Server.js
 └── README.md
-
+```
 ## Endpoints 🛣️
 
 ### Register User
