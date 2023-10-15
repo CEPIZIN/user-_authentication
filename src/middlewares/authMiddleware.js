@@ -22,4 +22,8 @@ const checkToken =  (req,res,next) =>{
 
 }
 
+const handlErro = (req,res,next) =>{
+
+}
+
 export default checkToken ; 

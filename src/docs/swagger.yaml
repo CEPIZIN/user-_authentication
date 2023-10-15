@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: 1.0.0
-  title: Minha API
+  title: BACK-END - user authetication API 
   description: em contrução 
 
 host: localhost:3000
@@ -10,8 +10,8 @@ basePath: /
 paths:
   /auth/register:
     post:
-      summary: Cria um novo usuário
-      description: Cria um novo usuário com base nos dados fornecidos
+      summary: Create | register a new user 
+      description: Create a user based on Data 
       consumes:
         - application/json
       produces:
@@ -24,7 +24,7 @@ paths:
             $ref: '#/definitions/UserInput'
       responses:
         '200':
-          description: Sucesso ao registrar o usuário
+          description: sucess create user
 
 definitions:
   UserInput:

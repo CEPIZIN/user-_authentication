@@ -45,7 +45,7 @@ class UserControll {
                         throw error;
                     });
             } catch (error) {
-                //tornar as menssagens mais especificas - esse aqui não é de servidor e o erro não é 500
+               
                 return res.status(500).send(`Error: ${error.message} - User registration failure `);
             }
 

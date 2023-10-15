@@ -10,11 +10,7 @@ const swaggerDocument = yaml.load(fs.readFileSync('./src/docs/swagger.yaml', 'ut
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-   //swager documentation 
-   app.get('/swagger', (req, res) => {
-    res.setHeader('Content-Type', 'application/yaml');
-    res.send(swaggerDocument);
-});
+ 
 
 
 app.listen(port, () => {
