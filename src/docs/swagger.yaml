@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
   version: 1.0.0
-  title: BACK-END - user authetication API 
-  description: em contrução 
+  title: BACK-END - user authentication API 
+  description: API for user authentication. This API allows registration of new users, authentication, and access to private information.
 
 host: localhost:3000
 basePath: /
@@ -24,7 +24,50 @@ paths:
             $ref: '#/definitions/UserInput'
       responses:
         '200':
-          description: sucess create user
+          description: success create user
+          schema:
+            $ref: '#/definitions/UserOutput'
+
+  /auth/login:
+    post:
+      summary: Authenticate user 
+      description: Authenticate a user based on credentials 
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserCredentials'
+      responses:
+        '200':
+          description: success authentication
+          schema:
+            $ref: '#/definitions/AuthResponse'
+        '404':
+          description: User not found
+
+  /auth/private/{id}:
+    get:
+      summary: Get user information 
+      description: Get user information for a private route 
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/PrivateUserInfo'
+        '404':
+          description: User not found
 
 definitions:
   UserInput:
@@ -33,4 +76,26 @@ definitions:
       username:
         type: string
       password:
+        type: string
+
+  UserCredentials:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+
+  AuthResponse:
+    type: object
+    properties:
+      msg:
+        type: string
+      token:
+        type: string
+
+  PrivateUserInfo:
+    type: object
+    properties:
+      msg:
         type: string
